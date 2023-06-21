@@ -6,6 +6,7 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 import HealthGoalsForm from './HealthGoalsForm';
 import FoodDatabase from './fooddatabase/fooddata';
+import MealsPlanner from './mealplanning/MealsPlanner';
 
 
 
@@ -46,7 +47,8 @@ function FoodDatabaseScreen() {
 function MealPlanningScreen() {
   return (
     <View style={styles.screenContainer}>
-      <Text>Meal Planning</Text>
+      <Text>MealsPlanner</Text>
+      <MealsPlanner />
     </View>
   );
 }
