@@ -1,11 +1,11 @@
 import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { StyleSheet, Text, View, TextInput, Button } from 'react-native';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
 
 import HealthGoalsForm from './HealthGoalsForm';
-
+import FoodDatabase from './fooddatabase/fooddata';
 
 
 export default function App() {
@@ -37,6 +37,7 @@ function FoodDatabaseScreen() {
   return (
     <View style={styles.screenContainer}>
       <Text>Food Database</Text>
+      <FoodDatabase /> 
     </View>
   );
 }

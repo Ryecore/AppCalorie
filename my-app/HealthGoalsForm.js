@@ -66,7 +66,7 @@ function HealthGoalsForm() {
   };
 
   const handleSubmit = () => {
-    // Handle form submission
+    
     if (isFormValid()) {
       const bmrValue = calculateBMR(age, gender, height, weight);
       const adjustedBMR = adjustBMRWithActivityLevel(bmrValue, activityLevel);
