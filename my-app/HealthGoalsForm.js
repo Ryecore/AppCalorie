@@ -2,6 +2,15 @@ import React, { useState } from 'react';
 import { View, Text, TextInput, Button } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
+function calculateBMR(age, gender, height, weight) {
+  if (gender === 'male') {
+    return 88.362 + 13.397 * weight + 4.799 * height - 5.677 * age;
+  } else if (gender === 'female') {
+    return 447.593 + 9.247 * weight + 3.098 * height - 4.330 * age;
+  }
+  return 0;
+}
+
 function HealthGoalsForm() {
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
@@ -9,6 +18,7 @@ function HealthGoalsForm() {
   const [weight, setWeight] = useState('');
   const [activityLevel, setActivityLevel] = useState('');
   const [healthGoal, setHealthGoal] = useState('');
+  const [bmr, setBMR] = useState('');
 
   const isFormValid = () => {
     return age !== '' && gender !== '' && height !== '' && weight !== '' && activityLevel !== '' && healthGoal !== '';
@@ -17,7 +27,8 @@ function HealthGoalsForm() {
   const handleSubmit = () => {
     // Handle form submission
     if (isFormValid()) {
-      // Perform data processing or submit the form
+      const bmrValue = calculateBMR(age, gender, height, weight);
+      setBMR(bmrValue.toFixed(2));
       console.log('Form submitted!');
     } else {
       console.log('Please fill in all fields.');
@@ -84,6 +95,8 @@ function HealthGoalsForm() {
       <Text>Selected Weight: {weight}</Text>
       <Text>Selected Activity Level: {activityLevel}</Text>
       <Text>Selected Health Goal: {healthGoal}</Text>
+
+      <Text>BMR: {bmr}</Text>
 
       <Button title="Submit" onPress={handleSubmit} disabled={!isFormValid()} />
     </View>
