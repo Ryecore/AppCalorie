@@ -1,20 +1,62 @@
 import { StatusBar } from 'expo-status-bar';
 import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+
+import HealthGoalsForm from './HealthGoalsForm';
+
+
 
 export default function App() {
   return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
+    <NavigationContainer>
+      <Tab.Navigator>
+        <Tab.Screen name="Health Goals" component={HealthGoalsScreen} />
+        <Tab.Screen name="Food Database" component={FoodDatabaseScreen} />
+        <Tab.Screen name="Meal Planning" component={MealPlanningScreen} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
+
+
+const Tab = createBottomTabNavigator();
+
+function HealthGoalsScreen() {
+  return (
+    <View style={styles.screenContainer}>
+      <Text>Health Goals</Text>
+      <HealthGoalsForm />
     </View>
   );
 }
 
+
+function FoodDatabaseScreen() {
+  return (
+    <View style={styles.screenContainer}>
+      <Text>Food Database</Text>
+    </View>
+  );
+}
+
+function MealPlanningScreen() {
+  return (
+    <View style={styles.screenContainer}>
+      <Text>Meal Planning</Text>
+    </View>
+  );
+}
+
+
 const styles = StyleSheet.create({
-  container: {
+  screenContainer: {
     flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
     justifyContent: 'center',
+    alignItems: 'center',
   },
 });
+
+
+
