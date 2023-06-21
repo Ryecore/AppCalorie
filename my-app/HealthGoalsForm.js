@@ -31,6 +31,19 @@ function adjustBMRWithActivityLevel(bmr, activityLevel) {
   }
 }
 
+function adjustCaloricIntake(bmr, healthGoal) {
+  switch (healthGoal) {
+    case 'loss':
+      return bmr * 0.9;
+    case 'maintenance':
+      return bmr;
+    case 'gain':
+      return bmr * 1.1;
+    default:
+      return bmr;
+  }
+}
+
 function HealthGoalsForm() {
   const [age, setAge] = useState('');
   const [gender, setGender] = useState('');
@@ -39,9 +52,17 @@ function HealthGoalsForm() {
   const [activityLevel, setActivityLevel] = useState('');
   const [healthGoal, setHealthGoal] = useState('');
   const [bmr, setBMR] = useState('');
+  const [caloricIntake, setCaloricIntake] = useState('');
 
   const isFormValid = () => {
-    return age !== '' && gender !== '' && height !== '' && weight !== '' && activityLevel !== '' && healthGoal !== '';
+    return (
+      age !== '' &&
+      gender !== '' &&
+      height !== '' &&
+      weight !== '' &&
+      activityLevel !== '' &&
+      healthGoal !== ''
+    );
   };
 
   const handleSubmit = () => {
@@ -49,7 +70,9 @@ function HealthGoalsForm() {
     if (isFormValid()) {
       const bmrValue = calculateBMR(age, gender, height, weight);
       const adjustedBMR = adjustBMRWithActivityLevel(bmrValue, activityLevel);
+      const adjustedCaloricIntake = adjustCaloricIntake(adjustedBMR, healthGoal);
       setBMR(adjustedBMR.toFixed(2));
+      setCaloricIntake(adjustedCaloricIntake.toFixed(2));
       console.log('Form submitted!');
     } else {
       console.log('Please fill in all fields.');
@@ -59,36 +82,20 @@ function HealthGoalsForm() {
   return (
     <View>
       <Text>Age:</Text>
-      <TextInput
-        value={age}
-        onChangeText={setAge}
-        keyboardType="numeric"
-      />
+      <TextInput value={age} onChangeText={setAge} keyboardType="numeric" />
 
       <Text>Gender:</Text>
-      <Picker
-        selectedValue={gender}
-        onValueChange={value => setGender(value)}
-      >
-        
+      <Picker selectedValue={gender} onValueChange={value => setGender(value)}>
         <Picker.Item label="" value="" />
         <Picker.Item label="Male" value="male" />
         <Picker.Item label="Female" value="female" />
       </Picker>
 
       <Text>Height (cm):</Text>
-      <TextInput
-        value={height}
-        onChangeText={setHeight}
-        keyboardType="numeric"
-      />
+      <TextInput value={height} onChangeText={setHeight} keyboardType="numeric" />
 
       <Text>Weight (kg):</Text>
-      <TextInput
-        value={weight}
-        onChangeText={setWeight}
-        keyboardType="numeric"
-      />
+      <TextInput value={weight} onChangeText={setWeight} keyboardType="numeric" />
 
       <Text>Activity Level:</Text>
       <Picker
@@ -104,10 +111,7 @@ function HealthGoalsForm() {
       </Picker>
 
       <Text>Health Goal:</Text>
-      <Picker
-        selectedValue={healthGoal}
-        onValueChange={value => setHealthGoal(value)}
-      >
+      <Picker selectedValue={healthGoal} onValueChange={value => setHealthGoal(value)}>
         <Picker.Item label="" value="" />
         <Picker.Item label="Weight Loss" value="loss" />
         <Picker.Item label="Weight Maintenance" value="maintenance" />
@@ -122,6 +126,7 @@ function HealthGoalsForm() {
       <Text>Selected Health Goal: {healthGoal}</Text>
 
       <Text>BMR: {bmr}</Text>
+      <Text>Caloric Intake: {caloricIntake}</Text>
 
       <Button title="Submit" onPress={handleSubmit} disabled={!isFormValid()} />
     </View>
