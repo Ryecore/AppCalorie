@@ -3,12 +3,32 @@ import { View, Text, TextInput, Button } from 'react-native';
 import { Picker } from '@react-native-picker/picker';
 
 function calculateBMR(age, gender, height, weight) {
+  let bmr = 0;
+
   if (gender === 'male') {
-    return 88.362 + 13.397 * weight + 4.799 * height - 5.677 * age;
+    bmr = 88.362 + 13.397 * weight + 4.799 * height - 5.677 * age;
   } else if (gender === 'female') {
-    return 447.593 + 9.247 * weight + 3.098 * height - 4.330 * age;
+    bmr = 447.593 + 9.247 * weight + 3.098 * height - 4.330 * age;
   }
-  return 0;
+
+  return bmr;
+}
+
+function adjustBMRWithActivityLevel(bmr, activityLevel) {
+  switch (activityLevel) {
+    case 'sedentary':
+      return bmr * 1.2;
+    case 'light':
+      return bmr * 1.375;
+    case 'moderate':
+      return bmr * 1.55;
+    case 'heavy':
+      return bmr * 1.725;
+    case 'extra':
+      return bmr * 1.9;
+    default:
+      return bmr;
+  }
 }
 
 function HealthGoalsForm() {
@@ -28,7 +48,8 @@ function HealthGoalsForm() {
     // Handle form submission
     if (isFormValid()) {
       const bmrValue = calculateBMR(age, gender, height, weight);
-      setBMR(bmrValue.toFixed(2));
+      const adjustedBMR = adjustBMRWithActivityLevel(bmrValue, activityLevel);
+      setBMR(adjustedBMR.toFixed(2));
       console.log('Form submitted!');
     } else {
       console.log('Please fill in all fields.');
@@ -49,6 +70,8 @@ function HealthGoalsForm() {
         selectedValue={gender}
         onValueChange={value => setGender(value)}
       >
+        
+        <Picker.Item label="" value="" />
         <Picker.Item label="Male" value="male" />
         <Picker.Item label="Female" value="female" />
       </Picker>
@@ -72,6 +95,7 @@ function HealthGoalsForm() {
         selectedValue={activityLevel}
         onValueChange={value => setActivityLevel(value)}
       >
+        <Picker.Item label="" value="" />
         <Picker.Item label="Sedentary" value="sedentary" />
         <Picker.Item label="Light Exercise" value="light" />
         <Picker.Item label="Moderate Exercise" value="moderate" />
@@ -84,6 +108,7 @@ function HealthGoalsForm() {
         selectedValue={healthGoal}
         onValueChange={value => setHealthGoal(value)}
       >
+        <Picker.Item label="" value="" />
         <Picker.Item label="Weight Loss" value="loss" />
         <Picker.Item label="Weight Maintenance" value="maintenance" />
         <Picker.Item label="Weight Gain" value="gain" />
