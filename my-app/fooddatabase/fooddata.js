@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { View, TextInput, Button, Text, TouchableOpacity, Modal, StyleSheet } from 'react-native';
+
 import { searchFood } from './nutritionx_api';
 import { Picker } from '@react-native-picker/picker';
 
@@ -12,8 +13,50 @@ function FoodDatabase() {
   const [mealType, setMealType] = useState('');
   const [selectedDay, setSelectedDay] = useState('');
   const [showModal, setShowModal] = useState(false);
-
-
+  const [mealPlan, setMealPlan] = useState({
+    "Lundi": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    },
+    "Mardi": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    },
+    "Mercredi": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    },
+    "Jeudi": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    },
+    "Vendredi": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    },
+    "Samedi": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    },
+    "Dimanche": {
+      "Breakfast": [],
+      "Lunch": [],
+      "Snack": [],
+      "Dinner": []
+    },
+  });
   
 
   const handleSearch = async () => {
@@ -49,24 +92,40 @@ function FoodDatabase() {
     setShowModal(true);
   };
 
-  const handleAddToMealPlan = () => {    
+  const handleAddToMealPlan = () => {
     if (quantity && mealType && selectedDay) {
-      // ici qu'il faut gerer le planning au lieu de retourner des logs
-      console.log('Aliment sélectionné:', selectedFood);
-      console.log('Quantité:', quantity);
-      console.log('Type de repas:', mealType);
-      console.log('Jour sélectionné:', selectedDay);
-      // Réinitialiser les valeurs
+      // Crée une copie du plan de repas existant
+      const updatedMealPlan = JSON.parse(JSON.stringify(mealPlan));
+  
+      // Vérifie si le jour sélectionné existe dans le plan de repas
+      if (updatedMealPlan[selectedDay]) {
+        updatedMealPlan[selectedDay][mealType].push({
+          label: selectedFood.label,
+          quantity: parseInt(quantity),
+          calories: selectedFood.calories
+        });
+      }
+  
+      // Met à jour le state du plan de repas en remplaçant l'ancien plan par le plan mis à jour
+      setMealPlan(updatedMealPlan);
+  
+
+      // Logs pour afficher le contenu du plan de repas
+      console.log('Plan de repas mis à jour :', updatedMealPlan);
+      console.log('Plan de repas pour Lundi (Petit-déjeuner) :', updatedMealPlan['Lundi']['Breakfast']);
+
+      // Réinitialise les valeurs
       setSelectedFood(null);
       setQuantity('1');
       setMealType('');
       setSelectedDay('');
       setShowModal(false);
+      setError(null);
     } else {
-      // si les informations ne sont pas complètes
       setError('Veuillez sélectionner la quantité, le type de repas et le jour.');
     }
   };
+  
 
   const handleGoBack = () => {
     setSelectedFood(null);
